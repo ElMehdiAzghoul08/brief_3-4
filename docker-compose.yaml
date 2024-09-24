@@ -1,0 +1,27 @@
+version: "3.7"
+services:
+  app:
+    build: .
+    container_name: express-app
+    ports:
+      - "3000:3000"
+    environment:
+      - MONGODB_URI=mongodb://mongo:27017/database_brief
+    depends_on:
+      - mongo
+    volumes:
+      - .:/usr/src/app
+    networks:
+      - app-network
+  mongo:
+    image: mongo:latest
+    container_name: my-mongo-db
+    ports:
+      - "27018:27017"
+    volumes:
+      - ./data:/data/db
+    networks:
+      - app-network
+networks:
+  app-network:
+    driver: bridge
